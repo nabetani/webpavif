@@ -22,13 +22,18 @@ def graph(src, title, dest):
         csv.keys()[i*2+2], csv.keys()[i*2+1] ] for i in r ]
     print( names )
     fig, ax = pyplot.subplots()
-    ax.set_xscale('log', base=10)
+    ax.set_xscale('log', base=2)
     ax.xaxis.set_major_formatter(lambda e, pos: sizename(e))
+
+    ax.set_xlabel('file size (ratio to PNG)')
+    ax.set_ylabel('average pixel value error')
 
     ax.set_yscale('log', base=2)
     ax.yaxis.set_major_formatter(lambda e, pos: diffname(e))
     # ax.yaxis.set_minor_locator(LogLocator(base=2))
     # ax.yaxis.set_major_locator(LogLocator(base=2))
+    if title=="turtle":
+        ax.set_xlim(0.45,1.1)
     for xn, yn in names:
         print(xn,yn)
         ax.set_title(title)
@@ -43,7 +48,7 @@ def graph(src, title, dest):
 
 
 def main():
-    for fn in ["ham", "voro", "cloud", "turtle", "dog"]:
+    for fn in ["jfish", "ham", "voro", "cloud", "turtle", "dog"]:
         graph(fn+".csv", fn, "charts/"+fn+".png")
 
 
