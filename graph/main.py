@@ -4,16 +4,15 @@ from matplotlib.ticker import LogLocator
 import re
 
 def sizename(e):
-    if e<1e3:
+    if e<1:
+        return "1/%d" % (1/e)
+    else:
         return "%d" % e
-    if e<1e4:
-        return "%.1fk" % (e*1e-3)
-    if e<1e6:
-        return "%.1fk" % (e*1e-3)
-    if e<1e7:
-        return "%dM" % (e*1e-6)
-    if e<1e9:
-        return "%dM" % (e*1e-6)
+
+def diffname(e):
+    if e==int(e):
+        return "%d" % e
+    return "1/%d" % (1/e)
 
 def graph(src, title, dest):
     pyplot.style.use("ggplot")
@@ -27,7 +26,7 @@ def graph(src, title, dest):
     ax.xaxis.set_major_formatter(lambda e, pos: sizename(e))
 
     ax.set_yscale('log', base=2)
-    ax.yaxis.set_major_formatter(lambda e, pos: ("%d" % e))
+    ax.yaxis.set_major_formatter(lambda e, pos: diffname(e))
     # ax.yaxis.set_minor_locator(LogLocator(base=2))
     # ax.yaxis.set_major_locator(LogLocator(base=2))
     for xn, yn in names:
@@ -44,8 +43,8 @@ def graph(src, title, dest):
 
 
 def main():
-    for fn in ["a", "voro"]:
-        graph(fn+".csv", fn, fn+".png")
+    for fn in ["ham", "voro", "cloud", "turtle", "dog"]:
+        graph(fn+".csv", fn, "charts/"+fn+".png")
 
 
 main()
