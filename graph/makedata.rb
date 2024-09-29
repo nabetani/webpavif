@@ -31,7 +31,7 @@ def test(fn)
   puts
 end
 
-%w(ham cloud turtle dog).each do |fn|
+%w(jfish ham cloud turtle dog).each do |fn|
   p fn
   test(fn)
 end  
