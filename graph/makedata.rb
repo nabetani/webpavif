@@ -1,11 +1,11 @@
 require "csv"
 
-def test(fn) 
-  CSV.open( "#{fn}.csv", "w") do |csv|
+def test(fn, prfix, range) 
+  CSV.open( [prfix,fn].compact.join("_")+".csv", "w") do |csv|
     csv << %w( q jpeg_diff jpeg_size webp_diff webp_size avif_diff avif_size )
     png = "../image/#{fn}.png"
     pngSize = File.size(png).to_f
-    1.step(99,1).each do |q|
+    range.each do |q|
       print "."
       r = [q]
       %w( .jpeg .webp ).each do |ext|
@@ -31,8 +31,22 @@ def test(fn)
   puts
 end
 
-%w(jfish ham cloud turtle dog).each do |fn|
-  p fn
-  test(fn)
-end  
+IMAGES = %w(jfish ham cloud turtle dog voro)
+
+def loq
+  IMAGES.each do |fn|
+    p fn
+    test(fn, nil, (1..99))
+  end  
+end
+
+def hiq
+  IMAGES.each do |fn|
+    p fn
+    test(fn, "hiq", (99..100))
+  end  
+end
+
+loq
+hiq
 
