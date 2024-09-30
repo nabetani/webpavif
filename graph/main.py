@@ -70,18 +70,18 @@ def graph(src, title, dest):
     # ax.set_yticklabels(ax.get_yticklabels(), fontsize=10)
     # print(data_fns, title, fn)
 
-def hgraph(src, title, dest):
-    pyplot.style.use("ggplot")
+def hgraph(ax, src, title, dest):
     csv = pd.read_csv(src)
     r = range((len(csv.keys())-1)//2)
     names = [ [
         csv.keys()[i*2+2], csv.keys()[i*2+1] ] for i in r ]
     print( names )
-    fig, ax = pyplot.subplots()
     ax.xaxis.set_major_formatter(lambda e, pos: sizename_h(e))
 
-    ax.set_xlabel('file size (ratio to PNG)')
-    ax.set_ylabel('average pixel value error')
+    fs=7
+
+    ax.set_xlabel('file size (ratio to PNG)', fontsize=fs)
+    ax.set_ylabel('average pixel value error', fontsize=fs)
 
     ax.yaxis.set_major_formatter(lambda e, pos: diffname_h(e))
     for xn, yn in names:
@@ -91,9 +91,6 @@ def hgraph(src, title, dest):
         col = colmap[label]
         ax.plot(csv[xn], csv[yn], label=label, color=col)
         ax.scatter(csv[xn][1:], csv[yn][1:], zorder=2, s=100, color=col)
-    pyplot.legend()
-    pyplot.tight_layout()
-    pyplot.savefig(dest)
 
 images = ["jfish", "ham", "voro", "cloud", "turtle", "dog"]
 
@@ -102,8 +99,15 @@ def loq():
         graph(fn+".csv", fn, "charts/"+fn+".png")
 
 def hiq():
+    pyplot.style.use("ggplot")
+    pos=0
     for fn in images:
-        hgraph("hiq_"+fn+".csv", fn, "charts/h_"+fn+".png")
+        pos+=1
+        ax = pyplot.subplot(230+pos)
+        hgraph(ax, "hiq_"+fn+".csv", fn, "charts/h_"+fn+".png")
+    pyplot.legend()
+    pyplot.tight_layout()
+    pyplot.savefig("charts/hiq.png")
 
-loq()
+# loq()
 hiq()
