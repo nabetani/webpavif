@@ -2,13 +2,13 @@ require "csv"
 
 def test(fn, prfix, range) 
   CSV.open( [prfix,fn].compact.join("_")+".csv", "w") do |csv|
-    csv << %w( q jpeg_diff jpeg_size webp_diff webp_size avif_diff avif_size )
+    csv << %w( q jpeg_diff jpeg_size webp_diff webp_size jp2_diff jp2_size avif_diff avif_size )
     png = "../image/#{fn}.png"
     pngSize = File.size(png).to_f
     range.each do |q|
       print "."
       r = [q]
-      %w( .jpeg .webp ).each do |ext|
+      %w( .jpeg .webp .jp2 ).each do |ext|
         dest = "./tmp/#{fn}#{ext}"
         %x(magick #{png} -quality #{q} #{dest})
         r += [
